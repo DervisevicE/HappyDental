@@ -76,6 +76,11 @@ const Navbar = () => {
             justifyContent: "flex-end",
           }}
         >
+          <div style={{ marginRight: 12 }}>
+            <HashLink to="/login_user" onClick={closeMobileMenu}>
+              Log in
+            </HashLink>
+          </div>
           <HashLink to="/register" onClick={closeMobileMenu}>
             Register
           </HashLink>

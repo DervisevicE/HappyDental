@@ -209,19 +209,6 @@ const Contact = () => {
           </div>
         </div>
         <LowerFooter />
-
-        <div className="copyright_footer">
-          <p>
-            <span>
-              <i className="fa-regular fa-copyright"></i>
-            </span>
-            2023
-            <a href="/" id="clinic_name">
-              Om Dental Clinic.
-            </a>
-            All Rights Reserved
-          </p>
-        </div>
       </div>
     </>
   );

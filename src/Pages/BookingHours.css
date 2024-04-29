@@ -24,6 +24,15 @@ input[type='date'] {
 input[type='date']::-webkit-calendar-picker-indicator {
   filter: invert(100%);
 }
+
+input[type='time'] {
+  background: transparent;
+  color: white;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator {
+  filter: invert(100%);
+}
 .bsc_lower {
  
   display: flex;

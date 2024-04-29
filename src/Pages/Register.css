@@ -35,7 +35,6 @@
   height: 5rem;
 }
 h1 {
-  color: white;
   text-transform: uppercase;
 }
 form {
@@ -52,7 +51,6 @@ input {
   padding: 1rem;
   border: 0.1rem solid #4e0eff;
   border-radius: 0.4rem;
-  color: white;
   width: 100%;
   font-size: 1rem;
 }
@@ -62,7 +60,6 @@ input:focus {
 }
 .submit_register_btn {
   background-color: #4e0eff;
-  color: white;
   padding: 1rem 2rem;
   border: none;
   font-weight: bold;
@@ -77,17 +74,16 @@ input:focus {
   align-content: center;
 }
 .submit_register_btn:hover {
-  background-color: #4e0eff;
+  background-color: #02282b;
 }
 .lower_title_register {
-  color: white;
   text-transform: uppercase;
   justify-content: center;
   display: flex;
   gap: 10px;
 }
 .lower_title_register a {
-  color: #4e0eff;
+  color: #02282b;
   text-decoration: none;
   font-weight: bold;
 }

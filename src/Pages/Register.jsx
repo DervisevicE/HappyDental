@@ -1,163 +1,205 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 import Logo from "../assets/logo.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Register.css";
 import Spinner from "../Components/Spinner";
-// import axios from "axios";
+
+import {
+  Grid,
+  Box,
+  Typography,
+  Paper,
+  TextField,
+  Autocomplete,
+  Button,
+  InputAdornment,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  IconButton,
+} from "@mui/material";
+
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Register = () => {
-  const url = "https://dental-service.onrender.com/register";
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
-  const navigate = useNavigate();
-  const [loader, setLoader] = useState("none");
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const toastOptions = {
-    position: "top-right",
-    autoClose: 8000,
-    pauseOnHover: true,
-    draggable: true,
-    theme: "dark",
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
-  useEffect(() => {
-    if (localStorage.getItem("chat-app-user")) {
-      navigate("/login_user");
-    }
-  });
-
-  const handleInputs = (event) => {
-    setUser({ ...user, [event.target.name]: event.target.value });
-  };
-
-  const handleValidation = () => {
-    const { password, confirmPassword, name, email } = user;
-    if (password !== confirmPassword) {
-      toast.error(
-        "password and confirm password should be same.",
-        toastOptions
-      );
-      return false;
-    } else if (name.length <= 2) {
-      toast.error("Enter your full name", toastOptions);
-      return false;
-    } else if (password.length < 6) {
-      toast.error("Password should be greater than 6 character", toastOptions);
-      return false;
-    } else if (email === "") {
-      toast.error("Email is required", toastOptions);
-      return false;
-    }
-    return true;
-  };
-
-  const PostData = async (e) => {
-    e.preventDefault();
-    const { name, email, password, confirmPassword } = user;
-    const requestOptions = {
-      // if key and values are same then dont write it again eg -> name: name
-      name,
-      email,
-      password,
-      confirmPassword,
-    };
-    console.log(requestOptions);
-
-    if (handleValidation()) {
-      setLoader("flex");
-      const res = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestOptions),
-      });
-
-      const data = await res.json();
-      if (data) {
-        setLoader("none");
-      }
-      console.log(data);
-      toast.error(data.error, toastOptions);
-      toast.error(data.message, toastOptions);
-
-      if (data.message === "user registered successfully") {
-        toast.success(data.message, toastOptions);
-        localStorage.setItem("chat-app-user", user);
-        navigate("/login_user");
-      }
-    }
+  const handleSubmit = () => {
+    console.log("First name:", firstName);
+    console.log("Last name:", lastName);
+    console.log("Email:", email);
+    console.log("Password:", password);
   };
 
   return (
-    <>
-      <div className="register_form_section">
-        <FormContainer className="form_container_register">
-          <form
-            className="register_u_form"
-            method="POST"
-            onSubmit={PostData}
-            data-aos="fade-right"
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingTop: 14,
+      }}
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          width: "30%",
+          padding: "40px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: "16px",
+        }}
+      >
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                paddingBottom: 6,
+              }}
+            >
+              <Typography
+                sx={{
+                  fontWeight: 700,
+                  fontSize: "24px",
+                }}
+              >
+                Sign Up
+              </Typography>
+              <Typography
+                sx={{
+                  color: "gray",
+                  fontSize: "18px",
+                }}
+              >
+                Create your Account
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 2,
+            }}
           >
-            <div className="brand">
-              <img src={Logo} alt="logo" />
-              <h1>Om Dental Clinic</h1>
-            </div>
-            <input
-              type="text"
-              placeholder="Enter Your Name"
-              name="name"
-              value={user.name}
-              onChange={handleInputs}
-              autoComplete="off"
+            <TextField
+              fullWidth
+              id="outlined-multiline-flexible"
+              label="First Name"
+              value={firstName}
+              onChange={(event) => setFirstName(event.target.value)}
             />
-            <input
-              type="email"
-              placeholder="Email"
-              name="email"
-              value={user.email}
-              onChange={handleInputs}
-              autoComplete="off"
+
+            <TextField
+              fullWidth
+              id="outlined-multiline-flexible"
+              label="Last Name"
+              value={lastName}
+              onChange={(event) => setLastName(event.target.value)}
             />
-            <input
-              type="Password"
-              placeholder="Password"
-              name="password"
-              value={user.password}
-              onChange={handleInputs}
-              autoComplete="off"
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              id="outlined-multiline-flexible"
+              label="Email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
             />
-            <input
-              type="Password"
-              placeholder="Confirm Password"
-              name="confirmPassword"
-              value={user.confirmPassword}
-              onChange={handleInputs}
-              autoComplete="off"
-            />
-            <button className="submit_register_btn" type="submit">
-              Sign Up
-              <Spinner id="rg_loder" style={loader} />
-            </button>
-            <span className="lower_title_register">
-              Already have an account ?<Link to="/login_user">Login</Link>
-            </span>
-          </form>
-        </FormContainer>
-        <ToastContainer />
-      </div>
-    </>
+          </Grid>
+
+          <Grid item xs={12}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel htmlFor="outlined-adornment-password">
+                Password
+              </InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-password"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+              />
+            </FormControl>
+          </Grid>
+
+          <Box sx={{ paddingTop: 16 }}></Box>
+
+          <Grid item xs={12} sx={{ width: "100%" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{
+                backgroundColor: "#02282b",
+                padding: 1,
+                width: "100%",
+                color: "white",
+                marginBottom: "10px",
+                borderColor: "#02282b",
+                "&:hover": {
+                  backgroundColor: "#01585b",
+                },
+              }}
+              onClick={handleSubmit}
+            >
+              Create Account
+            </Button>
+          </Grid>
+
+          <Grid item xs={12} sx={{ width: "100%" }}>
+            <Typography>
+              Already have an account?{" "}
+              <HashLink
+                to={"/login"}
+                style={{ borderBottom: "none", textDecoration: "none" }}
+              >
+                <span style={{ color: "#02282b", textTransform: "uppercase" }}>
+                  Log in
+                </span>
+              </HashLink>
+            </Typography>
+          </Grid>
+        </Grid>
+      </Paper>
+    </Box>
   );
 };
-
-const FormContainer = styled.div``;
 
 export default Register;

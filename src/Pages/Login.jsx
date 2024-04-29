@@ -1,114 +1,186 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { HashLink } from 'react-router-hash-link';
-import Logo from '../assets/logo.png';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import './Login.css';
-import Spinner from '../Components/Spinner';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
+import Logo from "../assets/logo.png";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./Login.css";
+import Spinner from "../Components/Spinner";
+
+import {
+  Grid,
+  Box,
+  Typography,
+  Paper,
+  TextField,
+  Autocomplete,
+  Button,
+  InputAdornment,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  IconButton,
+} from "@mui/material";
+
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
 const Login = () => {
-  // const url = "http://localhost:5000/login_user";
-  const url = 'https://dental-service.onrender.com/login_user';
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [userName, setUserName] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
-  const [loader, setLoader] = useState('none');
-  const [values, setValues] = useState({
-    email: '',
-    password: '',
-  });
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const toastOptions = {
-    position: 'top-right',
-    autoClose: 8000,
-    pauseOnHover: true,
-    draggable: true,
-    theme: 'dark',
-  };
-
-  const handleChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
-  };
-
-  const handleValidation = () => {
-    const { email, password } = values;
-    if (password === '') {
-      toast.error('Password is required', toastOptions);
-      return false;
-    } else if (email === '') {
-      toast.error('email and Password is required', toastOptions);
-      return false;
-    }
-    return true;
-  };
-
-  const PostData = async (event) => {
+  const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
 
-    const { email, password } = values;
-
-    const request_login_options = { email, password };
-
-    if (handleValidation()) {
-      setLoader('flex');
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(request_login_options),
-      });
-
-      const data = await res.json();
-
-      if (data) {
-        setLoader('none');
-      }
-      console.log(data);
-
-      if (data.status === false) {
-        toast.error(data.msg, toastOptions);
-      }
-      if (data.message === 'Login Successfully') {
-        localStorage.setItem('chat-app-user', data);
-        navigate('/dental-clinic/user/chat_section');
-      }
-    }
+  const handleSubmit = () => {
+    console.log("Username:", userName);
+    console.log("Password:", password);
   };
 
   return (
-    <>
-      <div className="login_form_section">
-        <div className="form_container_for_login">
-          <form method="POST" className="login_u_form" onSubmit={PostData}>
-            <div className="brand">
-              <img src={Logo} alt="logo" />
-              <h1>Om Dental Clinic</h1>
-            </div>
-            <input
-              type="text"
-              placeholder="Enter your Email"
-              name="email"
-              onChange={(e) => handleChange(e)}
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingTop: 14,
+      }}
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          width: "30%",
+          padding: "40px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: "16px",
+        }}
+      >
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                paddingBottom:6
+              }}
+            >
+              <Typography
+                sx={{
+                  fontWeight: 700,
+                  fontSize: "24px",
+                }}
+              >
+                Log in
+              </Typography>
+              <Typography
+                sx={{
+                  color: "gray",
+                  fontSize: "18px",
+                }}
+              >
+                Sign in to your account
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              id="outlined-multiline-flexible"
+              label="Username"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountCircle />
+                  </InputAdornment>
+                ),
+              }}
+              value={userName}
+              onChange={(event) => setUserName(event.target.value)}
             />
-            <input
-              type="Password"
-              placeholder="Password"
-              name="password"
-              onChange={(e) => handleChange(e)}
-            />
-            <button className="login_form_button" type="submit">
-              Login In
-              <Spinner id="login_loder" style={loader} />
-            </button>
-            <span className="lower_title_login">
-              Don't have an account ?
-              <HashLink to={'/register'}>Register</HashLink>
-            </span>
-          </form>
-        </div>
-        <ToastContainer />
-      </div>
-    </>
+          </Grid>
+
+          <Grid item xs={12}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel htmlFor="outlined-adornment-password">
+                Password
+              </InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-password"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+              />
+            </FormControl>
+          </Grid>
+
+          <Box sx={{ paddingTop: 16 }}></Box>
+
+          <Grid item xs={12} sx={{ width: "100%" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{
+                backgroundColor: "#02282b",
+                padding: 1,
+                width: "100%",
+                color: "white",
+                marginBottom: "10px",
+                borderColor: "#02282b",
+                "&:hover": {
+                  backgroundColor: "#01585b",
+                },
+              }}
+              onClick={handleSubmit}
+            >
+              Log in
+            </Button>
+          </Grid>
+
+          <Grid item xs={12} sx={{ width: "100%" }}>
+            <HashLink to="/register">
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{
+                  backgroundColor: "white",
+                  width: "100%",
+                  padding: 1,
+                  color: "#02282b",
+                  borderColor: "#02282b",
+                  "&:hover": {
+                    backgroundColor: "#f2f2f2",
+                  },
+                }}
+              >
+                Create new Account
+              </Button>
+            </HashLink>
+          </Grid>
+        </Grid>
+      </Paper>
+    </Box>
   );
 };
 
