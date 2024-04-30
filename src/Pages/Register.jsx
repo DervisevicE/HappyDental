@@ -187,7 +187,7 @@ const Register = () => {
             <Typography>
               Already have an account?{" "}
               <HashLink
-                to={"/login"}
+                to={"/login_user"}
                 style={{ borderBottom: "none", textDecoration: "none" }}
               >
                 <span style={{ color: "#02282b", textTransform: "uppercase" }}>
