@@ -20,7 +20,8 @@ public class User {
     private String firstName;
     private String lastName;
     private Role role;
-    private String email;
+    private String username;
+    private String password;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
@@ -34,11 +35,12 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Patient patient;
 
-    public User (String firstName, String lastName,Role role,String email)
+    public User (String firstName, String lastName,Role role,String username,String password)
     {
         this.firstName=firstName;
         this.lastName=lastName;
         this.role=role;
-        this.email=email;
+        this.username=username;
+        this.password=password;
     }
 }

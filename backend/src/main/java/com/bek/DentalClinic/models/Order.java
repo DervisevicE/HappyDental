@@ -35,7 +35,7 @@ public class Order {
     @JoinColumn(name="user_id",insertable=false,updatable=false)
     private User user;
 
-    public Order(LocalDateTime orderDateTime,Integer productId,Integer quantityOrdered,Integer userId)
+    public Order(LocalDateTime orderDateTime,Integer quantityOrdered,Integer productId,Integer userId)
     {
         this.orderDateTime=orderDateTime;
         this.productId=productId;

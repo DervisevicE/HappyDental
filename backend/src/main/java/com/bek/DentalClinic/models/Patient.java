@@ -41,12 +41,13 @@ public class Patient {
     @OneToMany(mappedBy = "patient")
     private List<Appointment> appointments;
 
-    public Patient(LocalDate birthdate, String city,Gender gender, String address, String phoneNumber) {
+    public Patient(LocalDate birthdate, String city,Gender gender, String address, String phoneNumber,Integer userId) {
         this.birthdate = birthdate;
         this.city=city;
         this.gender = gender;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.userId=userId;
     }
 
 }
