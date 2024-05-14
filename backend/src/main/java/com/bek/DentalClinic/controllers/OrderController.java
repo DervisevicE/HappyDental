@@ -46,4 +46,14 @@ public class OrderController {
     {
         orderService.deleteOrder(id);
     }
+    @PutMapping(path = "{id}/confirm")
+    public ResponseEntity<String> confirmOrder(@PathVariable Integer id) {
+        boolean isOrderFound=orderService.confirmOrder(id);
+        if (isOrderFound) {
+            return ResponseEntity.ok("Order confirmed sucessfully!");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

@@ -9,6 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -41,5 +44,17 @@ public class OrderService {
     public void deleteOrder(Integer id)
     {
         orderRepository.deleteById(id);
+    }
+
+    @Transactional
+    public boolean confirmOrder(Integer orderId){
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        if (orderOptional.isPresent()) {
+            Order order = orderOptional.get();
+            order.confirmOrder();
+            orderRepository.save(order);
+            return true;
+        }
+        return false;
     }
 }

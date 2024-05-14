@@ -18,6 +18,7 @@ public class Order {
     private Integer id;
     private LocalDateTime orderDateTime;
     private Integer quantityOrdered;
+    private boolean isOrderConfirmed = false;
 
     @Column(name="product_id")
     private Integer productId;
@@ -43,4 +44,7 @@ public class Order {
         this.userId=userId;
     }
 
+    public void confirmOrder(){
+        isOrderConfirmed=true;
+    }
 }
