@@ -15,6 +15,8 @@ import Profile from './Pages/Profile';
 import UserProfile from './Pages/UserProfile';
 import ApBooking from './Components/ApBooking';
 import Dashboard from './Pages/PagesData/Admin/Dashboard';
+import Order from './Pages/Order';
+import ShowOrders from './Pages/ShowOrders';
 
 const App = () => {
   // const [currentUser, setCurrentUser] = useState(undefined);
@@ -40,6 +42,7 @@ const App = () => {
               <ApBooking />
               <About />
               <Services />
+              <Order />
               <Contact />
             </>
           }
@@ -70,6 +73,7 @@ const App = () => {
           path="/dental-clinic/admin-person"
           element={<Dashboard />}
         />
+        <Route exact path="/dental-clinic/show-orders" element={<ShowOrders />} />
       </Routes>
     </>
   );

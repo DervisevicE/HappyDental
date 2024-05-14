@@ -63,6 +63,11 @@ const Navbar = () => {
                 Appointment
               </HashLink>
             </div>
+            <div className="MenuItems">
+              <HashLink to="/#order-product" onClick={closeMobileMenu}>
+                Order
+              </HashLink>
+            </div>
           </div>
         </div>
         <div className="toggle_menu_icons" onClick={handleClick}>

@@ -1,0 +1,138 @@
+.order_section_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  background-color: #e5e5e5;
+  position: relative;
+}
+
+.order_content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 20px;
+  width: 80%;
+  max-width: 1200px;
+}
+
+.product_table_container {
+  overflow-x: auto;
+}
+
+.product_table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 0 25px 0 #cbcbcbbf;
+}
+
+.product_table th,
+.product_table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.product_table th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+.order_form_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  background: #fff;
+  box-shadow: 0 0 25px 0 #cbcbcbbf;
+  border-radius: 6px;
+  padding: 20px;
+  height: fit-content;
+}
+
+.order_form_container h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #232323;
+  margin-bottom: 20px;
+}
+
+.form_group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.form_group label {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.form_group input,
+.form_group select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #000;
+}
+
+.order_form_buttons {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.order_button,
+.cancel_button,
+.show_orders_button {
+  padding: 10px 20px;
+  border: 2px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.order_button {
+  background-color: #333;
+  color: #fff;
+}
+
+.cancel_button {
+  background-color: #fff;
+  color: #333;
+}
+
+.show_orders_button {
+  background-color: #333;
+  color: #fff;
+  margin-top: 50px;
+}
+
+.order_button:hover,
+.cancel_button:hover,
+.show_orders_button:hover {
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 720px) {
+  .order_content {
+    flex-direction: column;
+  }
+
+  .product_table_container {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .order_form_container {
+    width: 100%;
+  }
+
+  .product_table {
+    width: 100%;
+  }
+}
