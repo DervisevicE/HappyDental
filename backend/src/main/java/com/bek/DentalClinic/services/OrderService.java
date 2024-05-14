@@ -1,7 +1,9 @@
 package com.bek.DentalClinic.services;
 
 import com.bek.DentalClinic.models.Order;
+import com.bek.DentalClinic.models.OrderSurvey;
 import com.bek.DentalClinic.repositories.OrderRepository;
+import com.bek.DentalClinic.repositories.OrderSurveyRepository;
 import com.bek.DentalClinic.viewModels.OrderVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,8 @@ public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private OrderSurveyRepository orderSurveyRepository;
 
     public Order addOrder(OrderVM order)
     {
@@ -37,6 +41,7 @@ public class OrderService {
         Page<Order> orders=orderRepository.findAll(pageable);
         return orders;
     }
+
     public Order getOrder(Integer id)
     {
         return orderRepository.findById(id).orElse(null);
@@ -56,5 +61,17 @@ public class OrderService {
             return true;
         }
         return false;
+    }
+
+    @Transactional
+    public void createOrderSurvey(Integer orderId, int grade, String comment) {
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        if (orderOptional.isPresent()) {
+            Order order = orderOptional.get();
+            OrderSurvey orderSurvey = new OrderSurvey(orderId, grade, comment);
+            orderSurveyRepository.save(orderSurvey);
+        } else {
+            throw new IllegalArgumentException("Order with id " + orderId + " not found.");
+        }
     }
 }

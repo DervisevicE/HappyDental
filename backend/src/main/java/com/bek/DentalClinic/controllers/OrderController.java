@@ -56,4 +56,18 @@ public class OrderController {
         }
     }
 
+    @PostMapping(path = "{orderId}/survey")
+    public ResponseEntity<String> createOrderSurvey(
+            @PathVariable Integer orderId,
+            @RequestParam int grade,
+            @RequestParam String comment
+    ) {
+        try {
+            orderService.createOrderSurvey(orderId, grade, comment);
+            return ResponseEntity.ok("Order survey created successfully!");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
