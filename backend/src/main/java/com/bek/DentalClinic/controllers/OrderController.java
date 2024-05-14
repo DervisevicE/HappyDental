@@ -1,6 +1,7 @@
 package com.bek.DentalClinic.controllers;
 
 import com.bek.DentalClinic.models.Order;
+import com.bek.DentalClinic.models.OrderSurvey;
 import com.bek.DentalClinic.services.OrderService;
 import com.bek.DentalClinic.viewModels.OrderVM;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +70,12 @@ public class OrderController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping(path = "surveys")
+    public ResponseEntity<List<OrderSurvey>> getAllOrderSurveys() {
+        List<OrderSurvey> orderSurveys = orderService.getAllOrderSurveys();
+        return ResponseEntity.ok(orderSurveys);
+    }
+
 
 }
