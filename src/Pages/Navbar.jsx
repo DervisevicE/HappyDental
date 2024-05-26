@@ -58,12 +58,12 @@ const Navbar = () => {
                 Contact
               </HashLink>
             </div>
-            <div className="MenuItems bgMenu" id="Appointment_menu">
+            <div className="MenuItems" id="Appointment_menu">
               <HashLink to="/dental-clinic/slot" onClick={closeMobileMenu}>
                 Appointment
               </HashLink>
             </div>
-            <div className="MenuItems bgMenu" id="Order_menu">
+            <div className="MenuItems" id="Order_menu">
               <HashLink to="/dental-clinic/order-product" onClick={closeMobileMenu}>
                 Order
               </HashLink>
@@ -73,22 +73,17 @@ const Navbar = () => {
         <div className="toggle_menu_icons" onClick={handleClick}>
           <i className={isActive ? "fas fa-times" : "fas fa-bars"}></i>
         </div>
-        <div
-          className="MenuItems"
-          style={{
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "flex-end",
-          }}
-        >
-          <div style={{ marginRight: 12 }}>
+        <div className="auth-links">
+          <div className="MenuItems" style={{ marginRight: 12 }}>
             <HashLink to="/login_user" onClick={closeMobileMenu}>
               Log in
             </HashLink>
           </div>
-          <HashLink to="/register" onClick={closeMobileMenu}>
-            Register
-          </HashLink>
+          <div className="MenuItems">
+            <HashLink to="/register" onClick={closeMobileMenu}>
+                Register
+            </HashLink>
+            </div>
         </div>
       </div>
     </>
