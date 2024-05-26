@@ -2,9 +2,12 @@ package com.bek.DentalClinic.services;
 
 import com.bek.DentalClinic.models.Order;
 import com.bek.DentalClinic.models.OrderSurvey;
+import com.bek.DentalClinic.models.Supplier;
 import com.bek.DentalClinic.repositories.OrderRepository;
 import com.bek.DentalClinic.repositories.OrderSurveyRepository;
+import com.bek.DentalClinic.repositories.SupplierRepository;
 import com.bek.DentalClinic.viewModels.OrderVM;
+import com.bek.DentalClinic.viewModels.SupplierVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +24,10 @@ public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private SupplierRepository supplierRepository;
+
     @Autowired
     private OrderSurveyRepository orderSurveyRepository;
 
@@ -65,6 +72,17 @@ public class OrderService {
     }
 
     @Transactional
+    public boolean cancelOrder(Integer orderId){
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order!=null) {
+            order.cancelOrder();
+            orderRepository.save(order);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
     public void createOrderSurvey(Integer orderId, int grade, String comment) {
         Optional<Order> orderOptional = orderRepository.findById(orderId);
         if (orderOptional.isPresent()) {
@@ -77,5 +95,27 @@ public class OrderService {
     }
     public List<OrderSurvey> getAllOrderSurveys() {
         return orderSurveyRepository.findAll();
+    }
+
+    public List<Order> getCanceledOrders()
+    {
+        return orderRepository.findCanceledOrders();
+    }
+
+    public List<Order> getConfirmedOrders()
+    {
+        return orderRepository.findConfirmedOrders();
+    }
+
+    public Supplier addSupplier(SupplierVM supplier)
+    {
+        return supplierRepository.save(new Supplier(supplier.getSupplierName()));
+    }
+
+    public Page<Supplier> getSuppliers(Integer page, Integer size,String sortBy)
+    {
+        Pageable pageable=PageRequest.of(page,size,Sort.by(sortBy));
+        Page<Supplier> suppliers=supplierRepository.findAll(pageable);
+        return suppliers;
     }
 }

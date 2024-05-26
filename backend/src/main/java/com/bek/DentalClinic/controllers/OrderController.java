@@ -2,8 +2,10 @@ package com.bek.DentalClinic.controllers;
 
 import com.bek.DentalClinic.models.Order;
 import com.bek.DentalClinic.models.OrderSurvey;
+import com.bek.DentalClinic.models.Supplier;
 import com.bek.DentalClinic.services.OrderService;
 import com.bek.DentalClinic.viewModels.OrderVM;
+import com.bek.DentalClinic.viewModels.SupplierVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +59,20 @@ public class OrderController {
         }
     }
 
+    @PutMapping(path = "{id}/cancel")
+    public ResponseEntity<String> cancelOrder(@PathVariable Integer id)
+    {
+        boolean isOrderCanceled=orderService.cancelOrder(id);
+        if(isOrderCanceled)
+        {
+            return ResponseEntity.ok("Order canceled sucessfully!");
+        }
+        else
+        {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping(path = "{orderId}/survey")
     public ResponseEntity<String> createOrderSurvey(
             @PathVariable Integer orderId,
@@ -77,5 +93,34 @@ public class OrderController {
         return ResponseEntity.ok(orderSurveys);
     }
 
+    @GetMapping(path = "/canceled")
+    public ResponseEntity<List<Order>> getCanceledOrders()
+    {
+        List<Order> orders=orderService.getCanceledOrders();
+        return (!orders.isEmpty()) ? ResponseEntity.ok(orders):ResponseEntity.notFound().build();
+    }
 
+    @GetMapping(path = "/confirmed")
+    public ResponseEntity<List<Order>> getConfirmedOrders()
+    {
+        List<Order> orders=orderService.getConfirmedOrders();
+        return (!orders.isEmpty()) ? ResponseEntity.ok(orders):ResponseEntity.notFound().build();
+    }
+
+    @PostMapping(path = "/suppliers")
+    public Supplier addSupplier(@RequestBody SupplierVM supplier)
+    {
+        return orderService.addSupplier(supplier);
+    }
+
+    @GetMapping(path = "/suppliers")
+    public ResponseEntity<Page<Supplier>> getSuppliers(
+        @RequestParam (defaultValue = "0") Integer page,
+        @RequestParam (defaultValue = "1") Integer size,
+        @RequestParam (defaultValue = "id") String sortBy
+        )
+    {
+        Page<Supplier> suppliers=orderService.getSuppliers(page,size,sortBy);
+        return (suppliers!=null && !suppliers.isEmpty()) ? ResponseEntity.ok(suppliers):ResponseEntity.notFound().build();
+    }
 }
