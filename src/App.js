@@ -42,7 +42,6 @@ const App = () => {
               <ApBooking />
               <About />
               <Services />
-              <Order />
               <Contact />
             </>
           }
@@ -51,6 +50,11 @@ const App = () => {
           exact
           path="/dental-clinic/appointment"
           element={<Appointment />}
+        />
+        <Route
+          exact
+          path="/dental-clinic/order-product"
+          element={<Order />}
         />
         {/* <Route exact path="/dental-clinic/treatments" element={} /> */}
         {/* <Route exact path="/dental-clinic/contact" element={} /> */}
