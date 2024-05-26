@@ -1,0 +1,49 @@
+.show_orders_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+.order_card {
+  background-color: #ffffff;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+}
+
+.order_card div {
+  margin-bottom: 10px;
+}
+
+.order_buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.order_buttons button {
+  margin-left: 10px;
+}
+
+.confirm_button {
+  background-color: green !important;
+  color: white !important;
+}
+
+.confirm_button:hover {
+  background-color: green !important;
+}
+
+.cancel_button {
+  background-color: red !important;
+  color: white !important;
+}
+
+.cancel_button:hover {
+  background-color: red !important;
+}
