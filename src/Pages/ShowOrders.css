@@ -47,3 +47,16 @@
 .cancel_button:hover {
   background-color: red !important;
 }
+
+.popup_buttons button {
+  margin-right: 10px;
+  background-color: #02282b;
+  color: white;
+  border-color: #02282b;
+}
+
+.popup_buttons button:hover {
+  background-color: #01585b;
+}
+
+
