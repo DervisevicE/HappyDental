@@ -1,8 +1,8 @@
 package com.bek.DentalClinic.enums;
 
 public enum Role {
-    Doctor,
-    Patient,
-    Admin
+    DOCTOR,
+    PATIENT,
+    ADMIN
 
 }
