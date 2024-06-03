@@ -63,11 +63,6 @@ function LowerFooter() {
       img: <i class="fa-brands fa-twitter"></i>,
       on_link: "https://www.twitter.com/",
     },
-    {
-      index: 4,
-      img: <i class="fa-sharp fa-solid fa-globe"></i>,
-      on_link: "https://omdentalclinic.vercel.app/#home",
-    },
   ];
   return (
     <>
