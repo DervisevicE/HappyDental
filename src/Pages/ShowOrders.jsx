@@ -4,29 +4,35 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import axios from 'axios';
 import './ShowOrders.css';
 
-const orders = [
-  { id: 1, orderdetails: { name: 'Dental Implants', quantityOrdered: '2', price: '$200' }, orderDate: '12-12-1999', status: 'confirmed' },
-  { id: 2, orderdetails: { name: 'Dental Implants', quantityOrdered: '2', price: '$200' }, orderDate: '12-12-1999', status: 'canceled' },
-  { id: 3, orderdetails: { name: 'Dental Implants', quantityOrdered: '2', price: '$200' }, orderDate: '12-12-1999', status: 'confirmed' },
-  { id: 4, orderdetails: { name: 'Dental Implants', quantityOrdered: '2', price: '$200' }, orderDate: '12-12-1999', status: 'canceled' },
-];
-
 const ShowOrders = () => {
-  const [confirmedOrders, setConfirmedOrders] = useState([]);
-  const [canceledOrders, setCanceledOrders] = useState([]);
   const [openPopup, setOpenPopup] = useState(false);
   const [popupTitle, setPopupTitle] = useState('');
   const [popupContent, setPopupContent] = useState(null);
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/orders');
+      setOrders(response.data);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  };
 
   useEffect(() => {
     if (openPopup) {
       let filteredOrders = [];
       if (popupTitle === 'Confirmed Orders') {
-        filteredOrders = confirmedOrders;
+        filteredOrders = orders.filter(order => order.status === 'confirmed');
       } else if (popupTitle === 'Canceled Orders') {
-        filteredOrders = canceledOrders;
+        filteredOrders = orders.filter(order => order.status === 'canceled');
       }
 
       setPopupContent(
@@ -72,14 +78,9 @@ const ShowOrders = () => {
         </div>
       );
     }
-  }, [openPopup, confirmedOrders, canceledOrders, popupTitle]);
+  }, [openPopup, orders, popupTitle]);
 
   const openOrdersPopup = (title) => {
-    if (title === 'Confirmed Orders') {
-      setConfirmedOrders(orders.filter(order => order.status === 'confirmed'));
-    } else if (title === 'Canceled Orders') {
-      setCanceledOrders(orders.filter(order => order.status === 'canceled'));
-    }
     setPopupTitle(title);
     setOpenPopup(true);
   };
