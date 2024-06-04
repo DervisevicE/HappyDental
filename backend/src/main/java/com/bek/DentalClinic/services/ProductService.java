@@ -1,5 +1,6 @@
 package com.bek.DentalClinic.services;
 
+import com.bek.DentalClinic.models.Order;
 import com.bek.DentalClinic.models.Product;
 import com.bek.DentalClinic.repositories.ProductRepository;
 import com.bek.DentalClinic.viewModels.ProductVM;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -33,6 +36,10 @@ public class ProductService {
         Pageable pageable= PageRequest.of(page,size, Sort.by(sortBy));
         Page<Product> products=productRepository.findAll(pageable);
         return products;
+    }
+
+    public List<Product> getAll() {
+        return productRepository.findAll();
     }
 
     public Product getProduct(Integer id)

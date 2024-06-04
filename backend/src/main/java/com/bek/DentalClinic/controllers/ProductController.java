@@ -1,8 +1,10 @@
 package com.bek.DentalClinic.controllers;
 
+import com.bek.DentalClinic.models.Order;
 import com.bek.DentalClinic.models.Product;
 import com.bek.DentalClinic.services.ProductService;
 import com.bek.DentalClinic.viewModels.ProductVM;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -42,6 +44,12 @@ public class ProductController {
 //        return (product!=null) ? ResponseEntity.ok(product):ResponseEntity.notFound().build();
 //    }
 
+    @GetMapping("/all")
+    public @ResponseBody ResponseEntity<List<Product>> getAllProducts() {
+        var products = productService.getAll();
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public @ResponseBody ResponseEntity<Product> getProduct(@PathVariable Integer id) {
         var product = productService.getProduct(id);
@@ -54,8 +62,6 @@ public class ProductController {
     {
         productService.deleteProduct(id);
     }
-
-
 
 
 }
