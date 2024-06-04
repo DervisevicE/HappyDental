@@ -27,7 +27,7 @@ public class DoctorController {
     @GetMapping
     public ResponseEntity<Page<Doctor>> getAllDoctors(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "1") Integer size,
+            @RequestParam(defaultValue = "3") Integer size,
             @RequestParam(defaultValue = "id") String sortBy
     )
     {

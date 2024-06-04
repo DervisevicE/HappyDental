@@ -1,16 +1,12 @@
-import React, { useState } from "react";
-import EveningData from "./PagesData/EveningData";
-import MorningData from "./PagesData/MorningData";
-import Logo from "../assets/logo.png";
-import { ToastContainer, toast } from "react-toastify";
-// import "./BookingHours.css";
+import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
-import Spinner from "../Components/Spinner";
+import axios from 'axios';
 import {
   Grid,
   Box,
   Typography,
-  Paper,
   TextField,
   Autocomplete,
   Button,
@@ -24,7 +20,6 @@ import dayjs from "dayjs";
 
 const BookingHours = () => {
   const url = "https://dental-service.onrender.com/dental-clinic/slot";
-  const navigate = useNavigate();
   const [loader, setLoader] = useState("none");
   const [activeUser, setActiveUser] = useState({
     date: "",
@@ -36,11 +31,61 @@ const BookingHours = () => {
   const [btn, setBtn] = useState(0);
   const [aces, setACES] = useState(-1);
   const [ace, setACE] = useState(-1);
-  const doctorsData = [
-    { name: "John Doe", something: "some" },
-    { name: "Mummy Bummy", something: "dome" },
-  ];
+  const [doctors, setDoctors] = useState([]);
+  const [appointmentDateTime, setAppointmentDateTime] = useState('');
+  const [doctorId, setDoctorId] = useState('');
+  const [patientId, setPatientId] = useState('');
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const appointmentData = {
+      appointmentDateTime: "2024-06-06T14:30:00",
+      doctorId: parseInt(doctorId),
+      patientId: 1,
+    };
+    console.log('app data', appointmentData);
+    try {
+      const response = await fetch('http://localhost:8080/appointments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(appointmentData),
+      });
+      console.log('podaci', response.data)
+      if (response.ok) {
+        console.log('Appointment created successfully');
+        toast.success('Appointment created successfully', { position: "top-right" });
+      } else {
+        console.error('Failed to create appointment');
+        toast.error('Failed to create appointment', { position: "top-right" });
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const fetchDoctors = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/doctors');
+      setDoctors(response.data.content);
+      console.log('doctori su ovdje', response.data.content)
+
+    } catch (error) {
+      console.error('Error fetching doctors:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
+
+  const navigate = useNavigate();
+
+  const handleCancel = () => {
+    navigate('/#home');
+  };
   const today = dayjs();
   const currentTime = dayjs().add(1, "minute").format("HH:mm");
   return (
@@ -68,8 +113,15 @@ const BookingHours = () => {
             <Autocomplete
               freeSolo
               id="combo-box-demo"
-              options={doctorsData}
-              getOptionLabel={(option) => option.name}
+              options={doctors}
+              getOptionLabel={(option) => `${option.specialization}`}
+              onChange={(event, newValue) => {
+                if (newValue) {
+                  setDoctorId(newValue.id);
+                } else {
+                  setDoctorId(null);
+                }
+              }}
               sx={{ width: "100%" }}
               renderInput={(params) => (
                 <TextField {...params} placeholder="Please select" />
@@ -118,6 +170,7 @@ const BookingHours = () => {
                   backgroundColor: "#01585b",
                 },
               }}
+              onClick={handleSubmit}
             >
               Book Appointment
             </Button>
@@ -137,11 +190,13 @@ const BookingHours = () => {
                   backgroundColor: "#f2f2f2",
                 },
               }}
+              onClick={handleCancel}
             >
               Cancel
             </Button>
           </Grid>
         </Grid>
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar newestOnTop closeOnClick rtl pauseOnFocusLoss draggable pauseOnHover />
       </Box>
     </>
   );
