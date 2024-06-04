@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class User {
     @Id
-    @GeneratedValue
+//    @GeneratedValue
     private Integer id;
     private String firstName;
     private String lastName;
@@ -44,5 +44,15 @@ public class User {
         this.role=role;
         this.email=email;
         this.password=password;
+    }
+
+    public User(Integer id, String firstName, String lastName, Role role, String email, String password) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.email = email;
+        this.password = password;
+
     }
 }

@@ -3,12 +3,15 @@ package com.bek.DentalClinic.services;
 import com.bek.DentalClinic.models.Appointment;
 import com.bek.DentalClinic.repositories.AppointmentRepository;
 import com.bek.DentalClinic.viewModels.AppointmentVM;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AppointmentService {
@@ -43,5 +46,21 @@ public class AppointmentService {
     public void deleteAppointment(Integer id)
     {
         appointmentRepository.deleteById(id);
+    }
+
+    public List<Appointment> getDoctorAppointments(Integer doctorId) {
+        List<Appointment> appointments = appointmentRepository.findByDoctorId(doctorId);
+        if (appointments.isEmpty()) {
+            throw new EntityNotFoundException("No appointments found for doctor with ID " + doctorId);
+        }
+        return appointments;
+    }
+
+    public List<Appointment> getPatientAppointments(Integer patientId) {
+        List<Appointment> appointments = appointmentRepository.findByPatientId(patientId);
+        if (appointments.isEmpty()) {
+            throw new EntityNotFoundException("No appointments found for patient with ID " + patientId);
+        }
+        return appointments;
     }
 }

@@ -1,10 +1,12 @@
 package com.bek.DentalClinic.controllers;
 
 import com.bek.DentalClinic.models.Patient;
+import com.bek.DentalClinic.models.Product;
 import com.bek.DentalClinic.services.PatientService;
 import com.bek.DentalClinic.viewModels.PatientVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +42,6 @@ public class PatientController {
         Patient patient=patientService.getPatient(id);
         return (patient!=null) ? ResponseEntity.ok(patient):ResponseEntity.notFound().build();
     }
-
 
     @DeleteMapping(path = "{id}")
     public void deletePatient(@PathVariable  Integer id)

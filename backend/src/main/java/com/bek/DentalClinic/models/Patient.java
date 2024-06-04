@@ -16,7 +16,7 @@ import java.util.List;
 public class Patient {
 
     @Id
-    @GeneratedValue
+//    @GeneratedValue
     private Integer id;
 
     private LocalDate birthdate;
@@ -50,5 +50,14 @@ public class Patient {
         this.userId=userId;
     }
 
+    public Patient(Integer id, LocalDate birthdate, String city, Gender gender, String address, String phoneNumber, Integer userId) {
+        this.id = id;
+        this.birthdate = birthdate;
+        this.city = city;
+        this.gender = gender;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.userId = userId;
+    }
 }
 

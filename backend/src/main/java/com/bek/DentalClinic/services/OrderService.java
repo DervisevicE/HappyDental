@@ -129,7 +129,7 @@ public class OrderService {
         Order newOrder = new Order();
         newOrder.setOrderDateTime(LocalDateTime.now());
         newOrder.setQuantityOrdered(order.getQuantityOrdered());
-        newOrder.setUserId(252);
+        newOrder.setUserId(7);
         newOrder.setProductId(order.getProductId());
 
         orderRepository.save(newOrder);
