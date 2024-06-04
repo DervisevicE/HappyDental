@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +53,7 @@ public class OrderService {
     }
 
     public List<Order> getAll() {
-        return orderRepository.findAll();
+        return orderRepository.findAll(Sort.by(Sort.Direction.DESC, "orderDateTime"));
     }
 
     public Order getOrder(Integer id)
@@ -122,5 +123,16 @@ public class OrderService {
         Pageable pageable=PageRequest.of(page,size,Sort.by(sortBy));
         Page<Supplier> suppliers=supplierRepository.findAll(pageable);
         return suppliers;
+    }
+
+    public Order addOrderByProductId(OrderVM order){
+        Order newOrder = new Order();
+        newOrder.setOrderDateTime(LocalDateTime.now());
+        newOrder.setQuantityOrdered(order.getQuantityOrdered());
+        newOrder.setUserId(7);
+        newOrder.setProductId(order.getProductId());
+
+        orderRepository.save(newOrder);
+        return newOrder;
     }
 }

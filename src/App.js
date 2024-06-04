@@ -17,6 +17,7 @@ import ApBooking from './Components/ApBooking';
 import Dashboard from './Pages/PagesData/Admin/Dashboard';
 import Order from './Pages/Order';
 import ShowOrders from './Pages/ShowOrders';
+import ShowAppointments from  './Pages/ShowAppointments';
 
 const App = () => {
   // const [currentUser, setCurrentUser] = useState(undefined);
@@ -50,6 +51,11 @@ const App = () => {
           exact
           path="/dental-clinic/appointment"
           element={<Appointment />}
+        />
+        <Route
+          exact
+          path="/dental-clinic/show-appointments"
+          element={<ShowAppointments />}
         />
         <Route
           exact

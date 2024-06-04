@@ -12,9 +12,10 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
     Order findById(int id);
 
-    @Query(value = "SELECT * FROM orders WHERE is_order_canceled=true",nativeQuery = true)
+    @Query(value = "SELECT * FROM orders WHERE is_order_canceled=true ORDER BY order_date_time DESC",nativeQuery = true)
     List<Order> findCanceledOrders();
 
-    @Query(value = "SELECT * FROM orders WHERE is_order_confirmed=true",nativeQuery = true)
+    @Query(value = "SELECT * FROM orders WHERE is_order_confirmed=true ORDER BY order_date_time DESC",nativeQuery = true)
     List<Order> findConfirmedOrders();
+
 }

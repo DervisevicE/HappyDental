@@ -36,7 +36,7 @@ public class DoctorController {
     }
 
     @GetMapping(path="{id}")
-    public ResponseEntity<Doctor> getDoctor(@PathVariable Integer id)
+    public @ResponseBody ResponseEntity<Doctor> getDoctor(@PathVariable Integer id)
     {
         Doctor doctor=doctorService.getDoctor(id);
         return (doctor!=null) ? ResponseEntity.ok(doctor):ResponseEntity.notFound().build();

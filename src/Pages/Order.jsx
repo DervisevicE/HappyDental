@@ -1,31 +1,23 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useTable, usePagination } from 'react-table';
 import './Order.css';
 import { useNavigate } from 'react-router-dom';
-
-import {Button} from "@mui/material";
+import axios from 'axios';
+import { Button } from "@mui/material";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Order = () => {
   const [selectedProduct, setSelectedProduct] = useState('');
   const [quantity, setQuantity] = useState('');
-
-  const dentalProducts = useMemo(() => [
-    { id: 1, name: 'Dental Implants', description: 'Titanium dental implants', price: '$200.00', availableQuantity: 50 },
-    { id: 2, name: 'Composite Fillings', description: 'Tooth-colored composite fillings', price: '$50.00', availableQuantity: 100 },
-    { id: 3, name: 'Porcelain Veneers', description: 'Custom-made porcelain veneers', price: '$150.00', availableQuantity: 75 },
-    { id: 4, name: 'Dental Crowns', description: 'Porcelain dental crowns', price: '$120.00', availableQuantity: 30 },
-    { id: 5, name: 'Teeth Whitening Kits', description: 'Professional teeth whitening kits', price: '$80.00', availableQuantity: 20 },
-    { id: 6, name: 'Orthodontic Braces', description: 'Metal orthodontic braces', price: '$1500.00', availableQuantity: 60 },
-    { id: 7, name: 'Dental Bridges', description: 'Fixed dental bridges', price: '$250.00', availableQuantity: 45 },
-    { id: 8, name: 'Dental Scalers', description: 'Professional dental scalers', price: '$80.00', availableQuantity: 25 },
-    { id: 9, name: 'Dental X-Ray Machine', description: 'Digital dental X-ray machine', price: '$5000.00', availableQuantity: 15 },
-  ], []);
+  const [dentalProducts, setDentalProducts] = useState([]);
+  const [selectedProductDetails, setSelectedProductDetails] = useState(null);
 
   const columns = useMemo(() => [
-    { Header: 'Product Name', accessor: 'name' },
+    { Header: 'Product Name', accessor: 'productName' },
     { Header: 'Description', accessor: 'description' },
-    { Header: 'Unit Price', accessor: 'price' },
-    { Header: 'Quantity Available', accessor: 'availableQuantity' },
+    { Header: 'Unit Price', accessor: 'unitPrice' },
+    { Header: 'Quantity Available', accessor: 'quantityAvailable' },
   ], []);
 
   const {
@@ -42,8 +34,47 @@ const Order = () => {
     prepareRow,
   } = useTable({ columns, data: dentalProducts, initialState: { pageSize: 8 } }, usePagination);
 
-  const handleOrder = () => {
-    console.log(`Ordering ${quantity} of ${selectedProduct}`);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/products/all');
+        setDentalProducts(response.data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    const fetchSelectedProductDetails = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/products/${selectedProduct}`);
+        setSelectedProductDetails(response.data);
+      } catch (error) {
+        console.error('Error fetching selected product details:', error);
+      }
+    };
+
+    if (selectedProduct) {
+      fetchSelectedProductDetails();
+    }
+  }, [selectedProduct]);
+
+  const handleOrder = async () => {
+    try {
+      const response = await axios.post('http://localhost:8080/orders/add', {
+        productId: selectedProduct,
+        quantityOrdered: quantity
+      });
+      console.log('Order placed:', response.data);
+      toast.success('Order placed successfully', { position: "top-right" });
+      handleCancel();
+    } catch (error) {
+      console.error('Error placing order:', error);
+      toast.error('Error placing order', { position: "top-right" });
+    }
   };
 
   const handleCancel = () => {
@@ -109,7 +140,7 @@ const Order = () => {
             >
               <option value="">Select Product</option>
               {dentalProducts.map((product) => (
-                <option key={product.id} value={product.name}>{product.name}</option>
+                <option key={product.id} value={product.id}>{product.productName}</option>
               ))}
             </select>
           </div>
@@ -123,61 +154,62 @@ const Order = () => {
             />
           </div>
           <div className="order_form_buttons">
-             <Button
-               variant="contained"
-               onClick={handleOrder}
-                  sx={{
-                    backgroundColor: "#02282b",
-                    padding: 1,
-                    width: "100%",
-                    color: "white",
-                    marginBottom: "10px",
-                    borderColor: "#02282b",
-                    "&:hover": {
-                      backgroundColor: "#01585b",
-                    },
-                  }}
-             >
-               ORDER PRODUCT
-             </Button>
+            <Button
+              variant="contained"
+              onClick={handleOrder}
+              sx={{
+                backgroundColor: "#02282b",
+                padding: 1,
+                width: "100%",
+                color: "white",
+                marginBottom: "10px",
+                borderColor: "#02282b",
+                "&:hover": {
+                  backgroundColor: "#01585b",
+                },
+              }}
+            >
+              ORDER PRODUCT
+            </Button>
 
-             <Button
-               variant="contained"
-               onClick={handleCancel}
-                  sx={{
-                    backgroundColor: "white",
-                    width: "100%",
-                    padding: 1,
-                    color: "#02282b",
-                    borderColor: "#02282b",
-                    "&:hover": {
-                      backgroundColor: "#f2f2f2",
-                    },
-                  }}
-             >
-               CANCEL
-             </Button>
+            <Button
+              variant="contained"
+              onClick={handleCancel}
+              sx={{
+                backgroundColor: "white",
+                width: "100%",
+                padding: 1,
+                color: "#02282b",
+                borderColor: "#02282b",
+                "&:hover": {
+                  backgroundColor: "#f2f2f2",
+                },
+              }}
+            >
+              CANCEL
+            </Button>
 
-             <Button
-               onClick={goToNewPage}
-                  sx={{
-                    backgroundColor: "#01585b",
-                    padding: 1,
-                    width: "100%",
-                    color: "white",
-                    marginBottom: "10px",
-                    borderColor: "#02282b",
-                    marginTop: "90px",
-                    "&:hover": {
-                      backgroundColor: "#017f82",
-                    },
-                  }}
-             >
-               SHOW ORDERS
-             </Button>
+            <Button
+              onClick={goToNewPage}
+              sx={{
+                backgroundColor: "#01585b",
+                padding: 1,
+                width: "100%",
+                color: "white",
+                marginBottom: "10px",
+                borderColor: "#02282b",
+                marginTop: "90px",
+                "&:hover": {
+                  backgroundColor: "#017f82",
+                },
+              }}
+            >
+              SHOW ORDERS
+            </Button>
           </div>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
     </div>
   );
 };

@@ -6,6 +6,7 @@ import com.bek.DentalClinic.models.Supplier;
 import com.bek.DentalClinic.services.OrderService;
 import com.bek.DentalClinic.viewModels.OrderVM;
 import com.bek.DentalClinic.viewModels.SupplierVM;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,11 +22,11 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @PostMapping
-    public Order addOrder(@RequestBody OrderVM order)
-    {
-        return orderService.addOrder(order);
-    }
+//    @PostMapping
+//    public Order addOrder(@RequestBody OrderVM order)
+//    {
+//        return orderService.addOrder(order);
+//    }
 
     @GetMapping
     public ResponseEntity<Page<Order>> getAllOrders(
@@ -130,4 +131,20 @@ public class OrderController {
         Page<Supplier> suppliers=orderService.getSuppliers(page,size,sortBy);
         return (suppliers!=null && !suppliers.isEmpty()) ? ResponseEntity.ok(suppliers):ResponseEntity.notFound().build();
     }
+
+//    @PostMapping("/add")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public @ResponseBody ResponseEntity<Order> addOrder(@RequestBody Integer productId, @RequestBody Integer quantityAvailable) {
+//        var newAppointment = orderService.addOrderByProductId(productId, quantityAvailable);
+//        return new ResponseEntity<>(newAppointment, HttpStatus.CREATED);
+//    }
+
+    @PostMapping("/add")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody ResponseEntity<Order> addOrder(@RequestBody OrderVM order) {
+        var newAppointment = orderService.addOrderByProductId(order);
+        return new ResponseEntity<>(newAppointment, HttpStatus.CREATED);
+    }
+
+
 }

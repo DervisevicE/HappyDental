@@ -5,6 +5,7 @@ import com.bek.DentalClinic.services.AppointmentService;
 import com.bek.DentalClinic.viewModels.AppointmentVM;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,6 +56,18 @@ public class AppointmentController {
     public void deleteAppointment(@PathVariable Integer id)
     {
         appointmentService.deleteAppointment(id);
+    }
+
+    @GetMapping("/getAppsByDid/{doctor_id}")
+    public ResponseEntity<List<Appointment>> getDoctorAppointments(@PathVariable Integer doctor_id){
+        var appointments = appointmentService.getDoctorAppointments(doctor_id);
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAppsByPid/{patient_id}")
+    public ResponseEntity<List<Appointment>> getPatientAppointments(@PathVariable Integer patient_id){
+        var appointments = appointmentService.getPatientAppointments(patient_id);
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 
 }

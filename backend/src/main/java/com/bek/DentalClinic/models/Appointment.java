@@ -41,4 +41,10 @@ public class Appointment {
         this.doctorId=doctorId;
     }
 
+    public Appointment(Integer id, LocalDateTime appointmentDateTime, Integer doctorId, Integer patientId) {
+        this.id = id;
+        this.appointmentDateTime = appointmentDateTime;
+        this.doctorId = doctorId;
+        this.patientId = patientId;
+    }
 }

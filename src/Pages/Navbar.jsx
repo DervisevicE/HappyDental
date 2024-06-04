@@ -58,16 +58,29 @@ const Navbar = () => {
                 Contact
               </HashLink>
             </div>
-            <div className="MenuItems" id="Appointment_menu">
-              <HashLink to="/dental-clinic/slot" onClick={closeMobileMenu}>
-                Appointment
-              </HashLink>
+            <div className="MenuItems">
+              <div className="dropdown">
+                <button className="dropbtn">Appointments</button>
+                <div className="dropdown-content">
+                  <HashLink to="/dental-clinic/slot" onClick={closeMobileMenu}>
+                    Book Appointment
+                  </HashLink>
+                  <HashLink to="/dental-clinic/show-appointments" onClick={closeMobileMenu}>
+                    Show Appointments
+                  </HashLink>
+                </div>
+              </div>
             </div>
             <div className="MenuItems" id="Order_menu">
               <HashLink to="/dental-clinic/order-product" onClick={closeMobileMenu}>
                 Order
               </HashLink>
             </div>
+{/*                 <div className="MenuItems" id="Order_menu"> */}
+{/*                   <HashLink to="/dental-clinic/show-appointments" onClick={closeMobileMenu}> */}
+{/*                     Show Appointments */}
+{/*                   </HashLink> */}
+{/*                 </div> */}
           </div>
         </div>
         <div className="toggle_menu_icons" onClick={handleClick}>

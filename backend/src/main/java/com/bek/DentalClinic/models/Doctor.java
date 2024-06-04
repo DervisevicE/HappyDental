@@ -14,7 +14,7 @@ import java.util.List;
 public class Doctor {
 
     @Id
-    @GeneratedValue
+//    @GeneratedValue
     private Integer id;
 
     private String specialization;
@@ -36,5 +36,10 @@ public class Doctor {
         this.userId=userId;
     }
 
+    public Doctor(Integer id, String specialization, Integer userId) {
+        this.id = id;
+        this.specialization = specialization;
+        this.userId = userId;
+    }
 }
 
