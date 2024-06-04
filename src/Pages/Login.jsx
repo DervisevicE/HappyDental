@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
+import axios from 'axios';
 import Logo from "../assets/logo.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -28,8 +29,9 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
-  const [userName, setUserName] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -37,9 +39,19 @@ const Login = () => {
     event.preventDefault();
   };
 
-  const handleSubmit = () => {
-    console.log("Username:", userName);
-    console.log("Password:", password);
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post("http://localhost:8080/api/login", { 
+        email, 
+        password 
+      });
+      const token = response.data;
+      localStorage.setItem('token', token);
+      toast.success('Prijava uspešna!');
+      navigate('/#home');  // Preusmeravanje na home stranicu
+    } catch (error) {
+      toast.error('Greška pri prijavi: ' + (error.response?.data?.message || error.message));
+    }
   };
 
   return (
@@ -103,8 +115,8 @@ const Login = () => {
                   </InputAdornment>
                 ),
               }}
-              value={userName}
-              onChange={(event) => setUserName(event.target.value)}
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
             />
           </Grid>
 
@@ -180,6 +192,7 @@ const Login = () => {
           </Grid>
         </Grid>
       </Paper>
+      <ToastContainer />
     </Box>
   );
 };

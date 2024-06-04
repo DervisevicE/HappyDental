@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
-import Logo from "../assets/logo.png";
+import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Register.css";
@@ -13,7 +13,6 @@ import {
   Typography,
   Paper,
   TextField,
-  Autocomplete,
   Button,
   InputAdornment,
   FormControl,
@@ -27,23 +26,39 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Register = () => {
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
+  const role="PATIENT";
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
-  const handleSubmit = () => {
-    console.log("First name:", firstName);
-    console.log("Last name:", lastName);
-    console.log("Email:", email);
-    console.log("Password:", password);
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.post("http://localhost:8080/api/register", {
+        firstName,
+        lastName,
+        role,
+        email,
+        password,
+      });
+      setLoading(false);
+      toast.success("Registration successful!");
+      navigate("/login_user");
+    } catch (error) {
+      setLoading(false);
+      toast.error("Registration failed. Please try again.");
+      console.error("Error during registration:", error);
+    }
   };
 
   return (
@@ -178,8 +193,9 @@ const Register = () => {
                 },
               }}
               onClick={handleSubmit}
+              disabled={loading}
             >
-              Create Account
+              {loading ? <Spinner /> : "Create Account"}
             </Button>
           </Grid>
 
@@ -198,6 +214,7 @@ const Register = () => {
           </Grid>
         </Grid>
       </Paper>
+      <ToastContainer />
     </Box>
   );
 };
