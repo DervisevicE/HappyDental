@@ -8,6 +8,7 @@ import com.bek.DentalClinic.repositories.OrderSurveyRepository;
 import com.bek.DentalClinic.repositories.SupplierRepository;
 import com.bek.DentalClinic.viewModels.OrderVM;
 import com.bek.DentalClinic.viewModels.SupplierVM;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,6 +49,10 @@ public class OrderService {
         Pageable pageable= PageRequest.of(page,size, Sort.by(sortBy));
         Page<Order> orders=orderRepository.findAll(pageable);
         return orders;
+    }
+
+    public List<Order> getAll() {
+        return orderRepository.findAll();
     }
 
     public Order getOrder(Integer id)

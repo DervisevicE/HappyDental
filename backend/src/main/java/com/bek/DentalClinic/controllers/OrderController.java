@@ -8,6 +8,7 @@ import com.bek.DentalClinic.viewModels.OrderVM;
 import com.bek.DentalClinic.viewModels.SupplierVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,12 +30,18 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<Page<Order>> getAllOrders(
             @RequestParam (defaultValue = "0") Integer page,
-            @RequestParam (defaultValue = "1") Integer size,
+            @RequestParam (defaultValue = "5") Integer size,
             @RequestParam (defaultValue = "id") String sortBy
     )
     {
         Page<Order> orders=orderService.getAllOrders(page,size,sortBy);
         return (orders!=null && !orders.isEmpty()) ? ResponseEntity.ok(orders):ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/all")
+    public @ResponseBody ResponseEntity<List<Order>> getAllOrders() {
+        var orders = orderService.getAll();
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     @GetMapping(path = "{id}")

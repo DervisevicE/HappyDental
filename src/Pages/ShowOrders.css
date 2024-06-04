@@ -59,4 +59,32 @@
   background-color: #01585b;
 }
 
+.popup-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.popup-table th, .popup-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.popup-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.popup-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.popup-table tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.popup-table th, .popup-table td {
+  text-align: center;
+}
+
 

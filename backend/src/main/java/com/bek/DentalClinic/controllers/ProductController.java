@@ -5,6 +5,7 @@ import com.bek.DentalClinic.services.ProductService;
 import com.bek.DentalClinic.viewModels.ProductVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,12 +35,19 @@ public class ProductController {
         return (products!=null && !products.isEmpty()) ? ResponseEntity.ok(products):ResponseEntity.notFound().build();
     }
 
-    @GetMapping(path = "{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable Integer id)
-    {
-        Product product=productService.getProduct(id);
-        return (product!=null) ? ResponseEntity.ok(product):ResponseEntity.notFound().build();
+//    @GetMapping(path = "{id}")
+//    public ResponseEntity<Product> getProduct(@PathVariable Integer id)
+//    {
+//        Product product=productService.getProduct(id);
+//        return (product!=null) ? ResponseEntity.ok(product):ResponseEntity.notFound().build();
+//    }
+
+    @GetMapping("/{id}")
+    public @ResponseBody ResponseEntity<Product> getProduct(@PathVariable Integer id) {
+        var product = productService.getProduct(id);
+        return  new ResponseEntity<>(product, HttpStatus.OK);
     }
+
 
     @DeleteMapping(path = "id")
     public void deleteProduct(@PathVariable Integer id)
