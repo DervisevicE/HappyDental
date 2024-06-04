@@ -20,7 +20,9 @@ const ShowOrders = () => {
   const fetchOrders = async () => {
     try {
       const response = await axios.get('http://localhost:8080/orders');
-      setOrders(response.data);
+      setOrders(response.data.content);
+      console.log('orderi su ovdje', response.data.content)
+
     } catch (error) {
       console.error('Error fetching orders:', error);
     }
@@ -95,10 +97,8 @@ const ShowOrders = () => {
         <div className='order_card' key={order.id}>
           <div><strong>Order Number:</strong> {order.id}</div>
           <div><strong>Order Details:</strong></div>
-          <div>Name: {order.orderdetails.name}</div>
-          <div>Quantity Ordered: {order.orderdetails.quantityOrdered}</div>
-          <div>Price: {order.orderdetails.price}</div>
-          <div><strong>Order Date:</strong> {order.orderDate}</div>
+          <div>Quantity Ordered: {order.quantityOrdered}</div>
+          <div><strong>Order Date:</strong> {order.orderDateTime}</div>
           <div className='order_buttons'>
             <Button variant="contained" className='confirm_button'>Confirm</Button>
             <Button variant="contained" className='cancel_button'>Cancel</Button>
